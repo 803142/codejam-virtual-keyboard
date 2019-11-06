@@ -5,7 +5,7 @@ class Draw {
 
       tag.className = classTag;
 
-      if (content !== undefined) {
+      if (content) {
         tag.innerHTML = content;
       }
       return tag;
