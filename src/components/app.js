@@ -3,7 +3,7 @@ import Draw from './draw';
 import dictionary from './dictionary';
 
 export default class App {
-  constructor(lng) {
+  constructor(lng = 'EN') {
     this.onPressKeys = [];
     this.changeLanguageCombination = ['ControlLeft', 'AltLeft'].sort().toString();
     this.chosenLanguage = lng;
@@ -36,20 +36,21 @@ export default class App {
           this.chosenLanguage = this.allLanguages[
             (this.allLanguages.indexOf(this.chosenLanguage) + 1) % this.allLanguages.length
           ];
-          [...document.querySelectorAll('.button-item')].forEach((element) => {
+          [...document.querySelectorAll('.button-item')].map((element) => {
             const [registr, elementCode] = element.classList[1].split('-');
-            let { innerHTML } = element;
+            const newElement = element;
             const myStorage = window.localStorage;
             myStorage.setItem('lng', this.chosenLanguage);
             if (keyboard[elementCode].dictionary) {
-              innerHTML = keyboard[elementCode].dictionary[this.chosenLanguage][registr];
+              newElement.innerHTML = keyboard[elementCode].dictionary[this.chosenLanguage][registr];
             }
-            return innerHTML;
+            return element;
           });
         }
-        if (key.shiftKey) {
+        if (key.code === 'ShiftLeft' || key.code === 'ShiftRight') {
           const allTypingButtons = [...document.querySelectorAll('.button-item')];
           allTypingButtons.map((element) => element.classList.toggle('active-shift'));
+          this.onPressShift = true;
         }
         if (keyboard[key.code].dictionary) {
           const register = key.shiftKey ? 1 : 0;
@@ -62,7 +63,8 @@ export default class App {
       (e) => {
         const code = [...e.target.classList][1];
         if (keyboard[code] && keyboard[code].dictionary) {
-          inputTag.value += keyboard[code].dictionary[this.chosenLanguage][0];
+          const register = this.onPressShift ? 1 : 0;
+          inputTag.value += keyboard[code].dictionary[this.chosenLanguage][register];
         }
         if (keyboard[code] && keyboard[code].activity) {
           inputTag.value = keyboard[code].activity(inputTag.value, inputTag.selectionStart);
@@ -79,6 +81,11 @@ export default class App {
           this.onPressKeys.splice(this.onPressKeys.indexOf(key.code), 1);
         }
         document.querySelector(`.${key.code}`).classList.toggle('active-button');
+        if (key.code === 'ShiftLeft' || key.code === 'ShiftRight') {
+          const allTypingButtons = [...document.querySelectorAll('.button-item')];
+          allTypingButtons.map((element) => element.classList.toggle('active-shift'));
+          this.onPressShift = false;
+        }
       },
       false,
     );
