@@ -19,7 +19,7 @@ class Draw {
     };
     this.typingButton = (element, additionalinfo, lang) => {
       const { dictionary, position } = additionalinfo;
-      const [unShift, onShift] = dictionary[lang];
+      const [unShift, onShift] = dictionary[lang].split('');
       const button = this.simpleTag('button', `key ${element}`, '', this.positionString(position));
 
       button.insertAdjacentElement(

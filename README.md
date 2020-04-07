@@ -1,5 +1,9 @@
 # RSS Виртуальная клавиатура
 
+[Distrebuted work](https://803142.github.io/codejam-virtual-keyboard/dist/)**
+
+For local using : clone repository, npm i, npm run dev
+
 ## Задание
 
 #### Вам нужно создать виртуальную клавиатуру 
