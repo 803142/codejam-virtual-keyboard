@@ -1,8 +1,10 @@
+import './style.scss';
 import App from './components/app';
 
-const app = new App();
+const myStorage = window.localStorage;
+const lng = myStorage.getItem('lng') || 'EN';
+const app = new App(lng);
 
 window.onload = () => {
-  const myStorage = localStorage;
-  app.render(myStorage.getItem('lng'));
+  app.render();
 };
